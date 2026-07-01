@@ -1,0 +1,37 @@
+<div class="select-type-page">
+
+  <div class="page-header">
+    <h1>Create New Service</h1>
+    <p class="page-subtitle">Choose a service type to get started</p>
+  </div>
+
+  <div class="type-grid">
+
+    <div class="type-column">
+      <h3>REST Service</h3>
+
+      <button class="type-option" (click)="selectRestApi()">
+        <div class="type-option-title">Start From Scratch</div>
+        <div class="type-option-desc">Configure a backend service manually</div>
+      </button>
+    </div>
+
+    <div class="type-column disabled">
+      <h3>GraphQL <span class="badge-soon">Soon</span></h3>
+      <button class="type-option" disabled>
+        <div class="type-option-title">Import GraphQL Schema</div>
+        <div class="type-option-desc">Coming in a future release</div>
+      </button>
+    </div>
+
+    <div class="type-column disabled">
+      <h3>WebSocket <span class="badge-soon">Soon</span></h3>
+      <button class="type-option" disabled>
+        <div class="type-option-title">Streaming API</div>
+        <div class="type-option-desc">Coming in a future release</div>
+      </button>
+    </div>
+
+  </div>
+
+</div>

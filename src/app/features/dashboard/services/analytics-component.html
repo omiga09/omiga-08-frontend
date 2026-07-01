@@ -1,0 +1,95 @@
+<div class="analytics-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Analytics</h1>
+      <p class="page-subtitle">Detailed request logs across all your services</p>
+    </div>
+    <div class="time-range-selector">
+      <button class="range-btn" [class.active]="timeRangeHours() === 1" (click)="changeTimeRange(1)">1h</button>
+      <button class="range-btn" [class.active]="timeRangeHours() === 24" (click)="changeTimeRange(24)">24h</button>
+      <button class="range-btn" [class.active]="timeRangeHours() === 168" (click)="changeTimeRange(168)">7d</button>
+    </div>
+  </div>
+
+  <div class="stats-grid" *ngIf="summary()">
+    <div class="stat-card">
+      <div class="stat-label">Total Requests</div>
+      <div class="stat-value">{{ summary()?.totalRequests ?? 0 }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Errors</div>
+      <div class="stat-value">{{ summary()?.errorRequests ?? 0 }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Error Rate</div>
+      <div class="stat-value">{{ summary()?.errorRatePercentage ?? 0 }}%</div>
+    </div>
+  </div>
+
+  <div class="error-banner" *ngIf="errorMessage()">
+    {{ errorMessage() }}
+  </div>
+
+  <div class="logs-section">
+
+    <div class="section-header">
+      <h2>Request Logs</h2>
+      <span class="total-count">{{ totalElements() }} total</span>
+    </div>
+
+    <div class="loading-state" *ngIf="isLoading()">Loading logs...</div>
+
+    <div class="empty-state" *ngIf="!isLoading() && logs().length === 0">
+      <p>No requests found for this time period.</p>
+    </div>
+
+    <div class="logs-table" *ngIf="!isLoading() && logs().length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Status</th>
+            <th>Latency</th>
+            <th>Source IP</th>
+            <th>Request ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs()">
+            <td class="mono">{{ formatDateTime(log.timestamp) }}</td>
+            <td><span class="method-badge">{{ log.method }}</span></td>
+            <td class="mono path-cell" [title]="log.path">{{ log.path }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(log.statusCode)">
+                {{ log.statusCode }}
+              </span>
+            </td>
+            <td class="mono">{{ log.responseTimeMs }}ms</td>
+            <td class="mono">{{ log.sourceIp }}</td>
+            <td class="mono request-id" [title]="log.requestId">{{ log.requestId | slice:0:8 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== PAGINATION ===== -->
+    <div class="pagination" *ngIf="!isLoading() && totalPages() > 1">
+      <button class="page-nav" [disabled]="currentPage() === 0" (click)="previousPage()">← Prev</button>
+
+      <button
+        class="page-number"
+        *ngFor="let page of pageNumbers()"
+        [class.active]="page === currentPage()"
+        (click)="goToPage(page)">
+        {{ page + 1 }}
+      </button>
+
+      <button class="page-nav" [disabled]="currentPage() >= totalPages() - 1" (click)="nextPage()">Next →</button>
+    </div>
+
+  </div>
+
+</div>

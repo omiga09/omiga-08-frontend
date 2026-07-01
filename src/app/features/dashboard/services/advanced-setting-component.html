@@ -1,0 +1,73 @@
+<div class="wizard-page">
+
+  <div class="page-header">
+    <h1>{{ isEditMode ? 'Edit Service' : 'Create New Service' }}</h1>
+    <p class="page-subtitle">Step 2 of 2 — Advanced Settings</p>
+  </div>
+
+  <div class="wizard-progress">
+    <div class="progress-step completed">
+      <span class="step-number">✓</span>
+      <span class="step-label">Basic Info</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step active">
+      <span class="step-number">2</span>
+      <span class="step-label">Advanced Settings</span>
+    </div>
+  </div>
+
+  <div class="wizard-card">
+
+    <div class="error-banner" *ngIf="errorMessage()">
+      {{ errorMessage() }}
+    </div>
+
+    <form [formGroup]="advancedForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group" formGroupName="selectedMethods">
+        <label>Allowed Methods</label>
+        <div class="method-tiles">
+          <label class="method-tile" *ngFor="let method of availableMethods">
+            <input type="checkbox" [formControlName]="method" />
+            <span>{{ method }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Visibility</label>
+          <select formControlName="visibility">
+            <option *ngFor="let option of visibilityOptions" [value]="option">{{ option }}</option>
+          </select>
+          <span class="hint">Public services appear in your documentation portal</span>
+        </div>
+        <div class="form-group">
+          <label>Health Check URL <span class="optional">(optional)</span></label>
+          <input type="text" formControlName="healthCheckUrl" placeholder="/health" class="mono" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Connect Timeout (ms)</label>
+          <input type="number" formControlName="connectTimeoutMs" />
+        </div>
+        <div class="form-group">
+          <label>Read Timeout (ms)</label>
+          <input type="number" formControlName="readTimeoutMs" />
+        </div>
+      </div>
+
+      <div class="wizard-footer">
+        <button type="button" class="btn-secondary" (click)="goBack()">← Back</button>
+        <button type="submit" class="btn-primary" [disabled]="isSaving()">
+          {{ isSaving() ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update Service' : 'Create Service') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

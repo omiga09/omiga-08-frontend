@@ -1,0 +1,107 @@
+<div class="register-page">
+  <div class="register-card">
+
+    <div class="register-header">
+      <div class="brand-logo">
+        <span class="brand-name">OMIGA08</span>&nbsp;<span class="brand-suffix">GATEWAY</span>
+      </div>
+      <h1>Create your company account</h1>
+      <p class="subtitle">Get started with your own API Gateway in minutes</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-section">
+        <h3>Company Details</h3>
+
+        <div class="form-group">
+          <label for="companyName">Company Name</label>
+          <input
+            id="companyName"
+            type="text"
+            formControlName="companyName"
+            placeholder="Acme Corporation"
+          />
+          <span class="error" *ngIf="registerForm.get('companyName')?.invalid && registerForm.get('companyName')?.touched">
+            Company name is required
+          </span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="companyEmail">Company Email</label>
+            <input
+              id="companyEmail"
+              type="email"
+              formControlName="companyEmail"
+              placeholder="info@acme.com"
+            />
+            <span class="error" *ngIf="registerForm.get('companyEmail')?.invalid && registerForm.get('companyEmail')?.touched">
+              Valid company email is required
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="contactPerson">Contact Person <span class="optional">(optional)</span></label>
+            <input
+              id="contactPerson"
+              type="text"
+              formControlName="contactPerson"
+              placeholder="John Doe"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Admin Account</h3>
+
+        <div class="form-group">
+          <label for="adminEmail">Admin Email</label>
+          <input
+            id="adminEmail"
+            type="email"
+            formControlName="adminEmail"
+            placeholder="admin@acme.com"
+          />
+          <span class="hint">This will be used to sign in</span>
+          <span class="error" *ngIf="registerForm.get('adminEmail')?.invalid && registerForm.get('adminEmail')?.touched">
+            Valid admin email is required
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="At least 8 characters"
+          />
+          <span class="error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            Password must be at least 8 characters
+          </span>
+        </div>
+      </div>
+
+      <div class="success-banner" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Creating account...</span>
+      </button>
+
+    </form>
+
+    <p class="footer-link">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </p>
+
+  </div>
+</div>

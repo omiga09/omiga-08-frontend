@@ -1,0 +1,191 @@
+<div class="transformations-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Transformations</h1>
+      <p class="page-subtitle">Modify requests and responses as they pass through the gateway</p>
+    </div>
+  </div>
+
+  <div class="service-selector">
+    <label>API Service</label>
+    <select [value]="selectedServiceId()" (change)="onServiceChange(+$any($event.target).value)">
+      <option *ngFor="let service of apiServices()" [value]="service.id">{{ service.name }}</option>
+    </select>
+  </div>
+
+  <div class="error-banner" *ngIf="errorMessage()">
+    {{ errorMessage() }}
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="activeTab() === 'headers'" (click)="switchTab('headers')">
+      Header Rules
+    </button>
+    <button class="tab" [class.active]="activeTab() === 'fields'" (click)="switchTab('fields')">
+      Field Mapping
+    </button>
+  </div>
+
+  <!-- ===== HEADER RULES TAB ===== -->
+  <div class="tab-content" *ngIf="activeTab() === 'headers'">
+
+    <div class="tab-header">
+      <p class="tab-desc">Add or remove HTTP headers on requests and responses</p>
+      <button class="btn-primary" (click)="openHeaderModal()">+ Add Rule</button>
+    </div>
+
+    <div class="loading-state" *ngIf="isLoading()">Loading rules...</div>
+
+    <div class="empty-state" *ngIf="!isLoading() && headerRules().length === 0">
+      <p>No header transformation rules yet for this service.</p>
+    </div>
+
+    <div class="rules-table" *ngIf="!isLoading() && headerRules().length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Header Name</th>
+            <th>Value</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rule of headerRules()">
+            <td><span class="type-chip">{{ rule.type }}</span></td>
+            <td class="mono">{{ rule.headerName }}</td>
+            <td class="mono">{{ rule.headerValue || '—' }}</td>
+            <td class="actions-col">
+              <button class="btn-icon danger" (click)="deleteHeaderRule(rule)" title="Delete">🗑</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== FIELD MAPPING TAB ===== -->
+  <div class="tab-content" *ngIf="activeTab() === 'fields'">
+
+    <div class="tab-header">
+      <p class="tab-desc">Rename JSON field names in request or response bodies</p>
+      <button class="btn-primary" (click)="openFieldModal()">+ Add Mapping</button>
+    </div>
+
+    <div class="empty-state" *ngIf="fieldRules().length === 0">
+      <p>No field mapping rules yet for this service.</p>
+    </div>
+
+    <div class="rules-table" *ngIf="fieldRules().length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Source Field</th>
+            <th>Target Field</th>
+            <th>Applies To</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rule of fieldRules()">
+            <td class="mono">{{ rule.sourceFieldName }}</td>
+            <td class="mono">{{ rule.targetFieldName }}</td>
+            <td>
+              <span class="applies-chip" *ngIf="rule.applyToRequest">Request</span>
+              <span class="applies-chip" *ngIf="rule.applyToResponse">Response</span>
+            </td>
+            <td class="actions-col">
+              <button class="btn-icon danger" (click)="deleteFieldRule(rule)" title="Delete">🗑</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== ADD HEADER RULE MODAL ===== -->
+  <div class="modal-overlay" *ngIf="showHeaderModal()" (click)="closeHeaderModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h2>Add Header Rule</h2>
+        <button class="btn-close" (click)="closeHeaderModal()">×</button>
+      </div>
+
+      <form [formGroup]="headerForm" (ngSubmit)="onSubmitHeader()" class="modal-body">
+
+        <div class="form-group">
+          <label>Rule Type</label>
+          <select formControlName="type">
+            <option *ngFor="let type of headerTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Header Name</label>
+          <input type="text" formControlName="headerName" placeholder="X-Custom-Header" class="mono" />
+        </div>
+
+        <div class="form-group">
+          <label>Header Value <span class="optional">(not needed for REMOVE rules)</span></label>
+          <input type="text" formControlName="headerValue" placeholder="some-value" class="mono" />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeHeaderModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="isSaving()">
+            {{ isSaving() ? 'Saving...' : 'Add Rule' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== ADD FIELD MAPPING MODAL ===== -->
+  <div class="modal-overlay" *ngIf="showFieldModal()" (click)="closeFieldModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h2>Add Field Mapping</h2>
+        <button class="btn-close" (click)="closeFieldModal()">×</button>
+      </div>
+
+      <form [formGroup]="fieldForm" (ngSubmit)="onSubmitField()" class="modal-body">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Source Field Name</label>
+            <input type="text" formControlName="sourceFieldName" placeholder="userId" class="mono" />
+          </div>
+          <div class="form-group">
+            <label>Target Field Name</label>
+            <input type="text" formControlName="targetFieldName" placeholder="user_id" class="mono" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Apply To</label>
+          <div class="checkbox-row">
+            <label class="checkbox-option">
+              <input type="checkbox" formControlName="applyToRequest" /> Request Body
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" formControlName="applyToResponse" /> Response Body
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeFieldModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="isSaving()">
+            {{ isSaving() ? 'Saving...' : 'Add Mapping' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

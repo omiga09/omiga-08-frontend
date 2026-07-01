@@ -1,0 +1,74 @@
+<div class="documentation-page">
+
+  <div class="page-header">
+  <div>
+    <h1>API Documentation</h1>
+    <p class="page-subtitle">Reference for all public services exposed through your gateway</p>
+  </div>
+  <button class="btn-export" *ngIf="docs().length > 0" (click)="exportAsJson()">
+    Export as JSON
+  </button>
+</div>
+
+  <div class="loading-state" *ngIf="isLoading()">Loading documentation...</div>
+
+  <div class="empty-state" *ngIf="!isLoading() && docs().length === 0">
+    <p>No public services yet. Mark a service as "Public" to see it here.</p>
+  </div>
+
+  <div class="docs-layout" *ngIf="!isLoading() && docs().length > 0">
+
+    <!-- ===== SIDEBAR LIST ===== -->
+    <aside class="docs-sidebar">
+      <button
+        class="doc-item"
+        *ngFor="let doc of docs()"
+        [class.active]="selectedDoc()?.basePath === doc.basePath"
+        (click)="selectDoc(doc)">
+        <span class="doc-item-name">{{ doc.name }}</span>
+        <span class="doc-item-version mono">{{ doc.version }}</span>
+      </button>
+    </aside>
+
+    <!-- ===== DETAIL PANEL ===== -->
+    <div class="docs-detail" *ngIf="selectedDoc() as doc">
+
+      <div class="detail-header">
+        <h2>{{ doc.name }}</h2>
+        <span class="version-badge mono">{{ doc.version }}</span>
+      </div>
+
+      <p class="detail-description" *ngIf="doc.description">{{ doc.description }}</p>
+
+      <div class="detail-section">
+        <h3>Endpoint</h3>
+        <div class="endpoint-display">
+          <code class="mono">{{ getFullUrl(doc) }}</code>
+          <button class="btn-copy" (click)="copyUrl(getFullUrl(doc))">
+            {{ copiedUrl() ? 'Copied!' : 'Copy' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Allowed Methods</h3>
+        <div class="methods-list">
+          <span class="method-chip" *ngFor="let method of doc.allowedMethods">{{ method }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section" *ngIf="doc.requiresApiKey">
+        <h3>Authentication</h3>
+        <p class="auth-note">This service requires an API key. Include it in the <code>X-API-Key</code> header.</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>Example Request</h3>
+        <pre class="code-block mono">{{ buildCurlExample(doc) }}</pre>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

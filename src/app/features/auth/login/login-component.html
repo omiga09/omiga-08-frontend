@@ -1,0 +1,85 @@
+<div class="auth-page">
+
+  <div class="auth-brand-panel">
+    <div class="brand-content">
+<div class="brand-logo">
+  <span class="brand-name">OMIGA08</span>&nbsp;<span class="brand-suffix">GATEWAY</span>
+</div>
+      <h2>API Gateway for Modern Businesses</h2>
+      <p>Secure, scalable, and built for teams that move fast.</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <span class="feature-dot"></span>
+          <span>Multi-tenant architecture</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-dot"></span>
+          <span>Real-time analytics</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-dot"></span>
+          <span>Enterprise-grade security</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-form-wrapper">
+
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to your OMIGA08 GATEWAY account</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="you@company.com"
+            autocomplete="email"
+          />
+          <span class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            Please enter a valid email address
+          </span>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <a routerLink="/forgot-password" class="forgot-link">Forgot password?</a>
+          </div>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <span class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            Password is required
+          </span>
+        </div>
+
+        <div class="error-banner" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading">Signing in...</span>
+        </button>
+
+      </form>
+
+      <p class="footer-link">
+        Don't have an account? <a routerLink="/register">Register your company</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>

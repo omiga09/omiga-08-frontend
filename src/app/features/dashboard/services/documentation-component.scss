@@ -1,0 +1,202 @@
+.documentation-page {
+  max-width: 1200px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .page-subtitle { color: var(--color-muted); font-size: var(--font-size-body); }
+}
+
+.loading-state, .empty-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+// ===== LAYOUT =====
+.docs-layout {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: flex-start;
+}
+
+.docs-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+
+  &:hover { background-color: #F8FAFC; }
+
+  &.active {
+    background-color: #EEF2FF;
+    .doc-item-name { color: var(--color-primary); }
+  }
+}
+
+.doc-item-name {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+}
+
+.doc-item-version {
+  font-size: 0.6875rem;
+  color: var(--color-muted);
+}
+
+// ===== DETAIL PANEL =====
+.docs-detail {
+  flex: 1;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+
+  h2 { font-size: 1.25rem; }
+}
+
+.version-badge {
+  padding: 2px 8px;
+  background-color: #F1F5F9;
+  color: var(--color-muted);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.detail-description {
+  color: var(--color-muted);
+  font-size: var(--font-size-body);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-xl);
+}
+
+.detail-section {
+  margin-bottom: var(--spacing-xl);
+
+  h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-muted);
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+.endpoint-display {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: #F8FAFC;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+
+  code {
+    flex: 1;
+    color: var(--color-text-dark);
+    font-size: 0.8125rem;
+    word-break: break-all;
+  }
+}
+
+.btn-copy {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+
+  &:hover { background-color: var(--color-primary-hover); }
+}
+
+.methods-list {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.method-chip {
+  padding: 4px 10px;
+  background-color: #EEF2FF;
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-mono);
+}
+
+.auth-note {
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+  line-height: 1.5;
+
+  code {
+    background: #F1F5F9;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+  }
+}
+
+.code-block {
+  background: #0F172A;
+  color: #A5F3FC;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.mono { font-family: var(--font-family-mono); }
+
+.btn-export {
+  padding: 9px 16px;
+  background-color: transparent;
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-small);
+  cursor: pointer;
+
+  &:hover { background-color: #F1F5F9; }
+}

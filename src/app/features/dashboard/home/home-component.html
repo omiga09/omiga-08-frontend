@@ -1,0 +1,87 @@
+<div class="dashboard-home">
+
+  <div class="page-header">
+    <div>
+      <h1>Overview</h1>
+      <p class="page-subtitle">Real-time metrics for {{ companyName }}</p>
+    </div>
+  </div>
+
+  <div class="stats-grid" *ngIf="!isLoading()">
+    <div class="stat-card">
+      <div class="stat-label">Total Requests (24h)</div>
+      <div class="stat-value">{{ summary()?.totalRequests ?? 0 }}</div>
+      <div class="stat-trend neutral">Across all services</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Errors (24h)</div>
+      <div class="stat-value">{{ summary()?.errorRequests ?? 0 }}</div>
+      <div class="stat-trend" [class.danger]="(summary()?.errorRequests ?? 0) > 0">
+        4xx / 5xx responses
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Error Rate</div>
+      <div class="stat-value">{{ summary()?.errorRatePercentage ?? 0 }}%</div>
+      <div class="stat-trend" [class.success]="(summary()?.errorRatePercentage ?? 0) < 5"
+           [class.danger]="(summary()?.errorRatePercentage ?? 0) >= 5">
+        {{ (summary()?.errorRatePercentage ?? 0) < 5 ? 'Healthy' : 'Needs attention' }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Avg Response Time</div>
+      <div class="stat-value">—</div>
+      <div class="stat-trend neutral">Coming soon</div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading()">
+    Loading metrics...
+  </div>
+
+  <div class="activity-section">
+    <div class="section-header">
+      <h2>Recent Activity</h2>
+      <span class="live-badge">
+        <span class="pulse-dot"></span> Live
+      </span>
+    </div>
+
+    <div class="activity-table" *ngIf="recentLogs().length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Status</th>
+            <th>Latency</th>
+            <th>Source IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of recentLogs()">
+            <td class="mono">{{ formatTime(log.timestamp) }}</td>
+            <td><span class="method-badge">{{ log.method }}</span></td>
+            <td class="mono path-cell">{{ log.path }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(log.statusCode)">
+                {{ log.statusCode }}
+              </span>
+            </td>
+            <td class="mono">{{ log.responseTimeMs }}ms</td>
+            <td class="mono">{{ log.sourceIp }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="empty-state" *ngIf="recentLogs().length === 0 && !isLoading()">
+      <p>No requests yet. Once your APIs start receiving traffic, you'll see activity here.</p>
+    </div>
+  </div>
+
+</div>

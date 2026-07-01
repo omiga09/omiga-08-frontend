@@ -1,0 +1,77 @@
+<div class="services-page">
+
+  <div class="page-header">
+    <div>
+      <h1>API Services</h1>
+      <p class="page-subtitle">Manage backend services routed through your gateway</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateService()">+ Create Service</button>
+  </div>
+
+  <div class="error-banner" *ngIf="errorMessage()">
+    {{ errorMessage() }}
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading()">Loading services...</div>
+
+  <div class="empty-state" *ngIf="!isLoading() && services().length === 0">
+    <p>No API services yet. Create your first service to start routing traffic.</p>
+    <button class="btn-primary" (click)="openCreateService()">+ Create Service</button>
+  </div>
+
+  <div class="services-table" *ngIf="!isLoading() && services().length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Base Path</th>
+          <th>Backend URL</th>
+          <th>Methods</th>
+          <th>Visibility</th>
+          <th>Status</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of services()">
+          <td>
+            <div class="service-name">{{ service.name }}</div>
+            <div class="service-version mono">{{ service.version }}</div>
+          </td>
+          <td class="mono">{{ service.basePath }}</td>
+          <td class="mono backend-url">{{ service.backendUrl }}</td>
+          <td>
+            <span class="method-chip" *ngFor="let method of service.allowedMethods">{{ method }}</span>
+          </td>
+          <td>
+            <span class="visibility-badge" [ngClass]="service.visibility === 'PUBLIC' ? 'public' : 'private'">
+              {{ service.visibility }}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="service.active ? 'active' : 'inactive'">
+              {{ service.active ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td class="actions-col">
+            <button class="btn-icon" (click)="openEditService(service)" title="Edit">✎</button>
+            <button class="btn-icon" (click)="toggleActive(service)" title="Toggle status">⏻</button>
+            <button class="btn-icon danger" (click)="confirmDelete(service)" title="Delete">🗑</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="confirm-overlay" *ngIf="showDeleteConfirm()" (click)="cancelDelete()">
+    <div class="confirm-card" (click)="$event.stopPropagation()">
+      <h3>Delete Service</h3>
+      <p>Are you sure you want to delete <strong>{{ serviceToDelete()?.name }}</strong>? This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+        <button class="btn-danger" (click)="executeDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>

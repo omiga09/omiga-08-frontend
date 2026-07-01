@@ -1,0 +1,169 @@
+.wizard-page {
+  max-width: 720px;
+}
+
+.page-header {
+  margin-bottom: var(--spacing-lg);
+
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .page-subtitle { color: var(--color-muted); font-size: var(--font-size-body); }
+}
+
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  .step-number {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #E2E8F0;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-bold);
+  }
+
+  .step-label {
+    font-size: var(--font-size-small);
+    color: var(--color-muted);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &.active .step-number { background-color: var(--color-primary); color: white; }
+  &.active .step-label { color: var(--color-text-dark); }
+  &.completed .step-number { background-color: var(--color-success); color: white; }
+}
+
+.progress-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 0 var(--spacing-md);
+  max-width: 80px;
+}
+
+.wizard-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--spacing-md);
+  .form-group { flex: 1; }
+}
+
+.form-group {
+  margin-bottom: var(--spacing-lg);
+
+  label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-small);
+    .optional { color: var(--color-muted); font-weight: var(--font-weight-regular); }
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body);
+    font-family: var(--font-family-primary);
+
+    &.mono { font-family: var(--font-family-mono); font-size: 0.8125rem; }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+  }
+
+  .hint { display: block; color: var(--color-muted); font-size: 0.75rem; margin-top: var(--spacing-xs); }
+}
+
+.wizard-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background-color: var(--color-primary-hover); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+
+  &:hover { background-color: #F1F5F9; }
+}
+
+.method-tiles {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.method-tile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-small);
+  font-family: var(--font-family-mono);
+
+  input[type="checkbox"] { width: auto; margin: 0; }
+
+  &:has(input:checked) {
+    background-color: #EEF2FF;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.error-banner {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: var(--color-danger);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-small);
+  margin-bottom: var(--spacing-lg);
+}

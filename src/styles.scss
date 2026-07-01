@@ -76,3 +76,132 @@ code, pre, .mono {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-code);
 }
+
+// ===== RESPONSIVE (MOBILE) =====
+@media (max-width: 768px) {
+
+  // Dashboard Layout
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    min-height: auto !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .sidebar-brand {
+    display: none;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .nav-section {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  .nav-section-title {
+    display: none;
+  }
+
+  .nav-link {
+    padding: 12px 10px;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    border-radius: 0;
+
+    .nav-icon {
+      display: none;
+    }
+  }
+
+  .content-area {
+    padding: var(--spacing-sm) !important;
+  }
+
+  .topbar {
+    padding: 0 var(--spacing-sm);
+    height: 48px;
+
+    .user-email {
+      font-size: 0.7rem;
+    }
+
+    .user-role {
+      display: none;
+    }
+  }
+
+  // Pages
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .services-table,
+  .keys-table,
+  .limits-table,
+  .rules-table,
+  .logs-table {
+    overflow-x: auto;
+
+    table {
+      min-width: 600px;
+    }
+  }
+
+  .docs-layout {
+    flex-direction: column !important;
+  }
+
+  .docs-sidebar {
+    width: 100% !important;
+  }
+
+  .wizard-page {
+    max-width: 100% !important;
+  }
+
+  .wizard-card {
+    padding: var(--spacing-md) !important;
+  }
+
+  .form-row {
+    flex-direction: column !important;
+  }
+
+  .page-header {
+    flex-direction: column !important;
+    gap: var(--spacing-sm);
+  }
+
+  .modal-card,
+  .confirm-card {
+    margin: var(--spacing-sm);
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-brand-panel {
+    display: none !important;
+  }
+
+  .auth-form-panel {
+    padding: var(--spacing-md);
+  }
+}
